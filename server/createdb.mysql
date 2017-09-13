@@ -1,0 +1,156 @@
+CREATE DATABASE IF NOT EXISTS pirouter;
+USE pirouter;
+
+DROP USER IF EXISTS 'pirouter'@'localhost';
+DROP USER IF EXISTS 'pirouter'@'%';
+DROP USER IF EXISTS 'pirouter_ro'@'localhost';
+DROP USER IF EXISTS 'pirouter_ro'@'%';
+DROP USER IF EXISTS 'pirouter_rw'@'localhost';
+DROP USER IF EXISTS 'pirouter_rw'@'%';
+DROP USER IF EXISTS 'pigrapher_ro'@'localhost';
+DROP USER IF EXISTS 'pigrapher_ro'@'%';
+DROP USER IF EXISTS 'pibw'@'localhost';
+DROP USER IF EXISTS 'pibw'@'pi';
+
+CREATE USER IF NOT EXISTS 'pirouter'@'localhost'     IDENTIFIED BY '__pirouterpasswd__';
+CREATE USER IF NOT EXISTS 'pirouter'@'%'             IDENTIFIED BY '__pirouterpasswd__';
+CREATE USER IF NOT EXISTS 'pirouter_ro'@'localhost'  IDENTIFIED BY '__pirouterropasswd__';
+CREATE USER IF NOT EXISTS 'pirouter_ro'@'%'          IDENTIFIED BY '__pirouterropasswd__';
+CREATE USER IF NOT EXISTS 'pirouter_rw'@'localhost'  IDENTIFIED BY '__pirouterrwpasswd__';
+CREATE USER IF NOT EXISTS 'pirouter_rw'@'%'          IDENTIFIED BY '__pirouterrwpasswd__';
+CREATE USER IF NOT EXISTS 'pigrapher_ro'@'localhost' IDENTIFIED BY '__pigrapherropasswd__'
+CREATE USER IF NOT EXISTS 'pigrapher_ro'@'%'         IDENTIFIED BY '__pigrapherropasswd__'
+CREATE USER IF NOT EXISTS 'pibw'@'localhost'         IDENTIFIED BY '__pibwpasswd__';
+CREATE USER IF NOT EXISTS 'pibw'@'pi'                IDENTIFIED BY '__pibwpasswd__';
+
+GRANT SELECT, UPDATE, INSERT, DELETE ON pirouter.* TO 'pirouter'@'localhost';
+GRANT SELECT                         ON pirouter.* TO 'pirouter'@'%'    REQUIRE X509;
+GRANT SELECT                         ON pirouter.* TO 'pirouter_ro'@'localhost';
+GRANT SELECT                         ON pirouter.* TO 'pirouter_ro'@'%' REQUIRE X509;
+GRANT SELECT, UPDATE, INSERT, DELETE ON pirouter.* TO 'pirouter_rw'@'localhost';
+GRANT SELECT, UPDATE, INSERT, DELETE ON pirouter.* TO 'pirouter_rw'@'%' REQUIRE X509;
+GRANT SELECT                         ON pirouter.users TO 'pigrapher_ro'@'localhost';
+GRANT SELECT                         ON pirouter.users TO 'pigrapher_ro'@'%' REQUIRE X509;
+GRANT SELECT                         ON pirouter.devices TO 'pigrapher_ro'@'localhost';
+GRANT SELECT                         ON super.* TO 'pigrapher_ro'@'localhost';
+GRANT SELECT, INSERT, DELETE ON pibw.* to 'pibw'@'localhost';
+GRANT SELECT, INSERT, DELETE ON pibw.* to 'pibw'@'pi' REQUIRE X509;
+GRANT SELECT                 ON pibw.* TO 'pigrapher_ro'@'localhost';
+GRANT SELECT                 ON pibw.* TO 'pigrapher_ro'@'%' REQUIRE X509;
+
+FLUSH PRIVILEGES;
+
+DROP TABLE IF EXISTS devices;
+DROP TABLE IF EXISTS dnspolicy;      # not used
+DROP TABLE IF EXISTS schedulepolicy;
+DROP TABLE IF EXISTS users;
+
+
+# moved to google calendar
+#                                    MTWTFSS
+# Use `WEEKDAY` for day_on, day_off: 0123456
+##CREATE TABLE schedulepolicy (
+##  id         INT UNSIGNED AUTO_INCREMENT,
+##  name       VARCHAR(64) NOT NULL,
+##  time_begin TIME        NOT NULL,
+##  time_end   TIME        NOT NULL,
+##  day_begin  TINYINT     NOT NULL,
+##  day_end    TINYINT     NOT NULL,
+##  note       VARCHAR(1024),
+##  PRIMARY KEY (id),
+##  CONSTRAINT UNIQUE KEY (name, )
+##) ENGINE=INNODB;
+##INSERT schedulepolicy (name, time_begin, time_end, day_begin, day_end, note)
+##  VALUES
+##    ("never",          "00:00:00", "00:00:00", 0, 0, "never let through the firewall"),
+##    ("unlimited",      "00:00:00", "24:00:00", 0, 6, "always allowed to connect"),
+##    ("limited_device", "03:00:00", "03:30:00", 0, 6, "allowed a little connect in the middle of the night"),
+##    ("natasha_p",      "04:00:00", "21:00:00", 0, 4, "weekday connectivity"),              
+##    ("natasha_p",      "03:10:00", "22:30:00", 5, 6, "weekend connectivity"),
+##    ("none",           "00:00:00", "00:00:00", 0, 0, "same as 'never'")
+##;
+##SELECT * FROM schedulepolicy;
+
+CREATE TABLE users (
+  `id`       INT UNSIGNED AUTO_INCREMENT,
+  `username` VARCHAR(48) NOT NULL,
+  `password` CHAR(60) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC)
+) ENGINE=INNODB;
+
+SELECT * FROM users;
+
+# dns policy not currently implemented
+CREATE TABLE dnspolicy (
+  id   INT UNSIGNED AUTO_INCREMENT,
+  name VARCHAR(24) NOT NULL,
+  PRIMARY KEY (id, name)
+) ENGINE=INNODB;
+INSERT dnspolicy (name) VALUES ('full'), ('family'), ('none');
+SELECT * FROM dnspolicy;
+
+ALTER TABLE devices ADD COLUMN `userid` INT UNSIGNED NOT NULL;
+ALTER TABLE devices ADD INDEX(userid);
+UPDATE devices SET userid = 1;
+ALTER TABLE devices ADD FOREIGN KEY (userid) REFERENCES `users`(`id`);
+
+DROP TABLE IF EXISTS devices;
+CREATE TABLE devices (
+  id                    MEDIUMINT UNSIGNED AUTO_INCREMENT,
+  hostname              VARCHAR(511) NOT NULL,
+  owner                 VARCHAR(64),
+  dnspolicyid           INT UNSIGNED,
+  thingtype             VARCHAR(128),
+  macaddress            VARCHAR(17)  NOT NULL,
+  ipv4                  VARCHAR(24),
+  schedulepolicy        VARCHAR(15)  NOT NULL,
+  vendor                VARCHAR(256),
+  notes                 VARCHAR(2048),
+  include               TINYINT      NOT NULL DEFAULT 1,
+  userid                INT UNSIGNED NOT NULL,
+  PRIMARY KEY (id),
+  INDEX (hostname),
+  INDEX (owner),
+  INDEX (macaddress),
+  UNIQUE(name, mac, ipv4),
+  FOREIGN KEY (dnspolicyid)
+    REFERENCES dnspolicy(id)
+  FOREIGN KEY (userid)
+    REFERENCES users(id)
+#  FOREIGN KEY (schedulepolicy)
+#    REFERENCES schedulepolicy(name)
+) ENGINE=INNODB;
+
+INSERT devices (hostname, owner, dnspolicyid, thingtype, macaddress, ipv4, schedulepolicy, vendor, notes, include, userid)
+  VALUES
+    ("poolthing","keith",1,"pool controller","00:90:c2:ea:41:25","192.168.99.130","unlimited","JK microsystems, Inc.","pentair pool brick",0,1),
+    ("CinemaDisplay","keith",2,"monitor","C8:2A:14:A2:0A:A1","192.168.99.201","unlimited","Apple, Inc","",1,1),
+    ("zyxel","share",1,"ZyXEL wap","B0:B2:DC:B1:7E:13","192.168.99.249","none","ZyXEL Communications Corporation","_",0,1)
+;
+#SELECT * FROM devices LIMIT 5;
+
+
+
+CREATE DATABASE IF NOT EXISTS pibw;
+use pibw;
+#
+## not sure yet how to index, or if i will need to. optimize later.
+DROP TABLE IF EXISTS iptable;
+CREATE TABLE IF NOT EXISTS iptable (
+  id          MEDIUMINT UNSIGNED NOT NULL,
+  pkts        INT       UNSIGNED NOT NULL,
+  bytes       BIGINT    UNSIGNED NOT NULL,
+  target      VARCHAR(18)        NOT NULL,
+  prot        VARCHAR(8)         NOT NULL,
+  opt         VARCHAR(8)         NOT NULL,
+  in_eth      VARCHAR(8)         NOT NULL,
+  out_eth     VARCHAR(8)         NOT NULL,
+  source      VARCHAR(24)        NOT NULL,
+  destination VARCHAR(24)        NOT NULL,
+  UNIQUE (id, source, destination),
+  KEY (id),
+  KEY (in_eth),
+  KEY (out_eth)
+);

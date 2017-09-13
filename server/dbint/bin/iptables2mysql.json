@@ -1,0 +1,271 @@
+{
+  "username": "me", 
+  "passwd": "passwd", 
+  "iptables": [
+    {
+      "opt": "--", 
+      "destination": "0.0.0.0/0", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "205323", 
+      "source": "192.168.99.101", 
+      "in": "eth1", 
+      "pkts": "1066", 
+      "out": "eth0"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "192.168.99.101", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "521424", 
+      "source": "0.0.0.0/0", 
+      "in": "eth0", 
+      "pkts": "1199", 
+      "out": "eth1"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "0.0.0.0/0", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "78679", 
+      "source": "192.168.99.102", 
+      "in": "eth1", 
+      "pkts": "517", 
+      "out": "eth0"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "192.168.99.102", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "141481", 
+      "source": "0.0.0.0/0", 
+      "in": "eth0", 
+      "pkts": "634", 
+      "out": "eth1"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "0.0.0.0/0", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "107801", 
+      "source": "192.168.99.150", 
+      "in": "eth1", 
+      "pkts": "803", 
+      "out": "eth0"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "192.168.99.150", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "356860", 
+      "source": "0.0.0.0/0", 
+      "in": "eth0", 
+      "pkts": "831", 
+      "out": "eth1"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "0.0.0.0/0", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "246039", 
+      "source": "192.168.99.152", 
+      "in": "eth1", 
+      "pkts": "1668", 
+      "out": "eth0"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "192.168.99.152", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "1847486", 
+      "source": "0.0.0.0/0", 
+      "in": "eth0", 
+      "pkts": "2262", 
+      "out": "eth1"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "0.0.0.0/0", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "102468", 
+      "source": "192.168.99.153", 
+      "in": "eth1", 
+      "pkts": "799", 
+      "out": "eth0"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "192.168.99.153", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "316762", 
+      "source": "0.0.0.0/0", 
+      "in": "eth0", 
+      "pkts": "710", 
+      "out": "eth1"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "0.0.0.0/0", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "32566", 
+      "source": "192.168.99.155", 
+      "in": "eth1", 
+      "pkts": "323", 
+      "out": "eth0"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "192.168.99.155", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "125856", 
+      "source": "0.0.0.0/0", 
+      "in": "eth0", 
+      "pkts": "323", 
+      "out": "eth1"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "0.0.0.0/0", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "226359", 
+      "source": "192.168.99.179", 
+      "in": "eth1", 
+      "pkts": "4071", 
+      "out": "eth0"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "192.168.99.179", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "11104950", 
+      "source": "0.0.0.0/0", 
+      "in": "eth0", 
+      "pkts": "9278", 
+      "out": "eth1"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "0.0.0.0/0", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "10566727", 
+      "source": "192.168.99.200", 
+      "in": "eth1", 
+      "pkts": "90686", 
+      "out": "eth0"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "192.168.99.200", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "282190368", 
+      "source": "0.0.0.0/0", 
+      "in": "eth0", 
+      "pkts": "228368", 
+      "out": "eth1"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "0.0.0.0/0", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "5682570", 
+      "source": "192.168.99.201", 
+      "in": "eth1", 
+      "pkts": "44110", 
+      "out": "eth0"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "192.168.99.201", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "22627971", 
+      "source": "0.0.0.0/0", 
+      "in": "eth0", 
+      "pkts": "49190", 
+      "out": "eth1"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "0.0.0.0/0", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "152", 
+      "source": "192.168.99.251", 
+      "in": "eth1", 
+      "pkts": "2", 
+      "out": "eth0"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "192.168.99.251", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "152", 
+      "source": "0.0.0.0/0", 
+      "in": "eth0", 
+      "pkts": "2", 
+      "out": "eth1"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "0.0.0.0/0", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "152", 
+      "source": "192.168.99.252", 
+      "in": "eth1", 
+      "pkts": "2", 
+      "out": "eth0"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "192.168.99.252", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "152", 
+      "source": "0.0.0.0/0", 
+      "in": "eth0", 
+      "pkts": "2", 
+      "out": "eth1"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "0.0.0.0/0", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "228", 
+      "source": "192.168.99.253", 
+      "in": "eth1", 
+      "pkts": "3", 
+      "out": "eth0"
+    }, 
+    {
+      "opt": "--", 
+      "destination": "192.168.99.253", 
+      "target": "ACCEPT", 
+      "prot": "all", 
+      "bytes": "228", 
+      "source": "0.0.0.0/0", 
+      "in": "eth0", 
+      "pkts": "3", 
+      "out": "eth1"
+    }
+  ]
+}
+
