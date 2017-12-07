@@ -12,7 +12,6 @@ import requests
 me = os.path.splitext(os.path.basename(sys.argv[0]))[0]
 dbintfile = '/usr/local/opt/pirouter/etc/dbint.json'
 
-
 # print to stderr
 def eprint(*args, **kwargs):
   print(*args, file=sys.stderr, **kwargs)
