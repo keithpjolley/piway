@@ -3,9 +3,9 @@
 This is a router, gateway, dns server, ad blocker, dhcp server, and soon-to-be vpn server.
 
 ##PHYSICAL SETUP:
-  1. An original model RPi with a 4GB SD card. I don't think this is important
-  2. eth0 (builtin) connects to modem - uses dhcp from modem
-  3. eth1 (usb dongle) connects to lan `ip: 192.168.99.1    bcast:192.168.99.255  mask:255.255.255.0`
+1. An original model RPi with a 4GB SD card. I don't think this is important
+2. eth0 (builtin) connects to modem - uses dhcp from modem
+3. eth1 (usb dongle) connects to lan `ip: 192.168.99.1    bcast:192.168.99.255  mask:255.255.255.0`
  
 Your network probably does not look like this. The config for eth0 is from dhcp. It changes.
 
@@ -147,12 +147,31 @@ Choose whatever IPv4 address/network you want. I use 192.168.99.1/24 (netmask: 2
 
 This *is* the gateway so the gateway's IP address is the same as above.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%
 
-with the filesystem in "rw" mode:
+I recently upgraded pi-hole, pi-hole-FTL, and the web interface and a few things seem to have changed
+a little. The two that knocked me offline for a bit had to do with two different startup scripts 
+doing a 'chmod user[AB] /var/log/pihole.log; chown 0600 /var/log/pihole.log' which meant that the
+second script run locked out the first script. I fixed that by making it so dnsmasq runs as user
+"pihole".
+
+
+The second thing that changed was the ethers file. I'm not exactly sure if the program (dnsmasq)
+changed or I couldn't find the documentation that showed how I'd made it it work the first time
+but, regardless, the "new" format is the standard /etc/ethers file. I updated "makedhcphostsfile.py"
+to use the new format (by swapping " " and "," in the print statement) and, since /etc is read-only,
+I linked /etc/ethers to the rw file.
+
+With the filesystem in "rw" mode:
+
+% sudo vi /etc/dnsmasq.conf
+Change "user=dnsmasq" to "user=pihole"
+
+% sudo ln -s /usr/local/opt/pirouter/tmp_rw/dhcp-hostsfile.txt  /etc/ethers
+
 % sudo pihole -a -p 'My Password'   # this gets reset with config sync
 //% sudo vi /etc/dnsmasq.conf
 //to include the following (match your network to what you chose above) in the appropriate places:
-
 
 % sudo vi /etc/dnsmasq.d/01-pihole.conf
 addn-hosts=/usr/local/opt/pirouter/tmp_rw/hosts.local

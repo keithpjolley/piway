@@ -30,8 +30,7 @@ Again, please let me know if you find this useful and how to improve.
 Keith
 
 p.s.  Current works in progress:
-    1. web interface
-    2. graphing of bandwidth usage
-    3. throttling of bandwidth (I'm very bandwidth constrained - monthly quotas kill me)
-    4. documentation!
-
+* web interface
+* graphing of bandwidth usage
+* throttling of bandwidth (I'm very bandwidth constrained - monthly quotas kill me)
+* documentation!
