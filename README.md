@@ -1,4 +1,7 @@
 # piway
+## DEPRECATED.
+Use https://github.com/keithpjolley/piway2 instead.
+
 ## Raspberry Pi Router Project
 This project uses iptables to configure a Raspberry Pi as a router. I had a SkyDog router and it 
 became a piece of cloud trash when the company no longer supported it. It had a lot of features
